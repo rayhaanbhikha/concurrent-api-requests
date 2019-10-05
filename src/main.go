@@ -25,7 +25,11 @@ func main() {
 		wg.Add(1)
 		go func(password string) {
 			defer wg.Done()
-			post(host, username, password)
+			statusCode, _, _ := post(host, username, password)
+			if statusCode >= 200 && statusCode < 300 {
+				fmt.Println("correct password is ", password)
+				os.Exit(0)
+			}
 		}(password)
 	}
 
